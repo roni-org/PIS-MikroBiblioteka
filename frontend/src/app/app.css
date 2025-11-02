@@ -1,0 +1,53 @@
+
+
+.top-bar {
+  background-color: #0b2315 !important;
+  display: flex;
+  padding: 15px 30px;
+}
+
+.image-button {
+  gap: 20px;
+  background: none !important;
+}
+
+.logo {
+  width: 140px;
+  height: auto;
+}
+
+.top-bar button {
+  background: var(--color-separator);
+  border: none;
+  color: var(--color-button-text);
+  font-weight: bold;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.top-bar button:hover {
+  opacity: 0.7;
+}
+
+.file-button{
+  position: absolute;
+  right: 20px;
+  top: 50px;
+  transform: translateY(-50%);
+}
+
+.separator {
+  width: 3px;
+  height: 28px;
+  margin-left: 20px;
+  margin-right: 25px;
+
+  background: var(--color-separator);
+  border-radius: 2px;
+}
+
+.content {
+  padding: 20px;
+  text-align: center;
+}
