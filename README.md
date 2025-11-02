@@ -27,10 +27,11 @@ Program korzysta z biblioteki Material UI, zainstaluj ją komendą:
     npm install @hello-pangea/dnd
     npm install @angular/core @angular/common @angular/platform-browser @angular/compiler @angular/forms @angular/router @angular/material
 
-### Testy:
-    npm install --save-dev jest @testing-library/react @testing-library/jest-dom @testing-library/user-event
-
 ### Uruchomienie frontendu lokalnie
 cd /frontend
 npm start
+
+### docker compose, tips
+docker-compose down -v --remove-orphans
+docker-compose up --build
 

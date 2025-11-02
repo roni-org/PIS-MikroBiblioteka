@@ -19,8 +19,10 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-postgres:5432/mydb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/mikrodb
     depends_on:
       - db-postgres
+      - db-mongo
     networks:
       - app-network
 
@@ -36,6 +38,22 @@ services:
       - "5434:5432"
     volumes:
       - ./db-postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+
+  db-mongo:
+    image: mongo:8
+    container_name: db-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      MONGO_INITDB_DATABASE: mikrodb
+    volumes:
+      - ./mongo-data:/data/db
+      - ./db-mongo:/docker-entrypoint-initdb.d
     networks:
       - app-network
 
