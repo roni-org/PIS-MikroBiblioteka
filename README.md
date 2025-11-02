@@ -1,16 +1,36 @@
 # PIS - MikroBiblioteka
 
-# Zespół
+## Zespół
 Weronika Maślana
 Alesia Filinkova
 Diana Pelin
 
-# Terminy
+## Terminy
 * 25.11 - etap 1
 * 16.12 - etap 2
 * dowolny przed 20.01 - etap 3
 * 20.01 - etap 4
 
-# zakres projektu
+## Zakres projektu
 system do archiwizowania plików. Umożliwia wgrywanie plików do bazy danych, przegląd i ściąganie ich przez wszystkich użytkowników. Pliki są przechowywane na oddzielnej bazie danych od metadanych plików - możliwej do postawienia na odrębnym serwerze.
+
+## Uruchomienie
+z głównego katalogu zawołaj w terminalu:
+
+    docker-compose build
+    docker-compose up
+
+(można dopisać frontend lub backend lub db-postgres by uruchomić tylko dany obraz z dockera)
+Program korzysta z biblioteki Material UI, zainstaluj ją komendą:
+
+    npm install @mui/material @emotion/react @emotion/styled
+    npm install @mui/material
+    npm install @hello-pangea/dnd
+
+### Testy:
+    npm install --save-dev jest @testing-library/react @testing-library/jest-dom @testing-library/user-event
+
+### Uruchomienie frontendu lokalnie
+cd /frontend
+npm start
 
