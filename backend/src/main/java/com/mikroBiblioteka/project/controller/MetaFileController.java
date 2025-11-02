@@ -34,18 +34,6 @@ public class MetaFileController {
         return metaFileRepository.save(metaFile);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<MetaFile> updateMetaFile(@PathVariable Integer id, @RequestBody MetaFile updatedFile) {
-        return metaFileRepository.findById(id)
-                .map(metaFile -> {
-                    metaFile.setName(updatedFile.getName());
-                    metaFile.setSize(updatedFile.getSize());
-                    metaFile.setDataId(updatedFile.getDataId());
-                    return ResponseEntity.ok(metaFileRepository.save(metaFile));
-                })
-                .orElse(ResponseEntity.notFound().build());
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteMetaFile(@PathVariable Integer id) {
         return metaFileRepository.findById(id)
