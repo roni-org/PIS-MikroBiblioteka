@@ -7,8 +7,6 @@ services:
       - "4200:4200"
     depends_on:
       - backend
-    environment:
-      - REACT_APP_API_URL=http://localhost:8080
     networks:
       - app-network
 
@@ -16,7 +14,7 @@ services:
     build: ./backend
     container_name: pis-backend
     ports:
-      - "8081:8080"
+      - "8080:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-postgres:5432/mydb
       - SPRING_DATASOURCE_USERNAME=postgres
