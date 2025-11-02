@@ -9,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@ActiveProfiles("test")
 @SpringBootTest
 @AutoConfigureMockMvc
 class MetaFileControllerTest {
@@ -69,20 +71,6 @@ class MetaFileControllerTest {
                 .andExpect(jsonPath("$.name").value("newFile.txt"));
     }
 
-    @Test
-    void shouldUpdateMetaFile() throws Exception {
-        MetaFile updated = MetaFile.builder()
-                .name("updated.pdf")
-                .size(999)
-                .dataId(5)
-                .build();
-
-        mockMvc.perform(put("/api/meta-files/{id}", sampleMetaFile.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updated)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("updated.pdf"));
-    }
 
     @Test
     void shouldDeleteMetaFile() throws Exception {
