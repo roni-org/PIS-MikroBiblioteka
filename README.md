@@ -35,3 +35,5 @@ npm start
 docker-compose down -v --remove-orphans
 docker-compose up --build
 
+### code coverage (jacoco)
+in folder: PIS-MikroBiblioteka/backend/target/site/jacoco/index.html
