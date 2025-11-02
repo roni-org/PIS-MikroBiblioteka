@@ -23,9 +23,9 @@ z głównego katalogu zawołaj w terminalu:
 (można dopisać frontend lub backend lub db-postgres by uruchomić tylko dany obraz z dockera)
 Program korzysta z biblioteki Material UI, zainstaluj ją komendą:
 
-    npm install @mui/material @emotion/react @emotion/styled
     npm install @mui/material
     npm install @hello-pangea/dnd
+    npm install @angular/core @angular/common @angular/platform-browser @angular/compiler @angular/forms @angular/router @angular/material
 
 ### Testy:
     npm install --save-dev jest @testing-library/react @testing-library/jest-dom @testing-library/user-event

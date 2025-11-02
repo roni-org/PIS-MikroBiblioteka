@@ -1,60 +1,15 @@
 :root {
-  --color-background: #061b0f;
+  --color-background: #092e19;
   --color-text: white;
-  --color-separator: #6a7c2a;
+  --color-separator: #4e904b;
   --color-button-text: white;
 }
 
 body, html {
-  margin: 0;
+  margin-top: 10px;
   padding: 0;
   height: 100%;
   background-color: var(--color-background);
   color: var(--color-text);
   font-family: Arial, sans-serif;
-}
-
-.top-bar {
-  background-color: #143120 !important;
-  display: flex;
-  padding: 15px 30px;
-}
-
-.image-button {
-  gap: 20px;
-  background: none !important;
-}
-
-.logo {
-  width: 140px;
-  height: auto;
-}
-
-.top-bar button {
-  background: var(--color-separator);
-  border: none;
-  color: var(--color-button-text);
-  font-weight: bold;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 20px;
-}
-
-.top-bar button:hover {
-  opacity: 0.7;
-}
-
-.separator {
-  width: 3px;
-  height: 28px;
-  margin-left: 20px;
-  margin-right: 25px;
-
-  background: var(--color-separator);
-  border-radius: 2px;
-}
-
-.content {
-  padding: 20px;
-  text-align: center;
 }
