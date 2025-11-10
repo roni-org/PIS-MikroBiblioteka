@@ -51,3 +51,28 @@
   padding: 20px;
   text-align: center;
 }
+
+.file-info {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.file-info button {
+  background-color: var(--color-separator);
+  color: var(--color-button-text);
+  font-size: 18px;
+}
+
+.file-info button:hover {
+  opacity: 0.7;
+}
+
+.success {
+  color: green;
+  margin-top: 20px;
+}
+
+.error {
+  color: red;
+  margin-top: 20px;
+}
