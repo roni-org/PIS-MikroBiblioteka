@@ -20,7 +20,7 @@ export class App {
   uploadSuccess = false;
   uploadError = '';
 
-  private uploadUrl = 'http://localhost:8080/api/files/upload';
+  private uploadUrl = 'http://localhost:8081/api/files/upload';
 
   constructor(private http: HttpClient) {}
 
