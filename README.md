@@ -31,9 +31,12 @@ Program korzysta z biblioteki Material UI, zainstaluj ją komendą:
 cd /frontend
 npm start
 
+### Uruchomienie backendu lokalnie
+cd /backend
+mvn spring-boot:run
+
 ### docker compose, tips
 docker-compose down -v --remove-orphans
-docker-compose up --build
 
 ### code coverage (jacoco)
 in folder: PIS-MikroBiblioteka/backend/target/site/jacoco/index.html

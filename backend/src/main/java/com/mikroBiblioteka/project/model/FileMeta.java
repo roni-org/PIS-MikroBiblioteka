@@ -14,16 +14,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MetaFile {
+public class FileMeta {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "meta_files_seq")
+    @SequenceGenerator(name = "meta_files_seq", sequenceName = "meta_files_seq", allocationSize = 50)
+    private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "file_name", nullable = false, length = 100)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "file_size", nullable = false)
     private Integer size;
 
     @Builder.Default
@@ -31,5 +32,9 @@ public class MetaFile {
     private LocalDateTime uploadedAt = LocalDateTime.now();
 
     @Column(name = "data_id")
-    private Integer dataId;
+    private String dataId;
+
+    @Column(name = "content_type")
+    private String contentType;
+
 }

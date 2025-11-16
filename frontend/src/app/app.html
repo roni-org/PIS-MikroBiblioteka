@@ -1,16 +1,40 @@
 <mat-toolbar color="primary" class="top-bar">
   <button mat-button class="image-button">
-    <img src="images/mikroBibliotekaLogo.png" alt="Logo" class="logo" />
+    <img src="/images/mikroBibliotekaLogo.png" alt="Logo" class="logo" />
     mikroBiblioteka
   </button>
 
   <span class="spacer"></span>
 
-  <button mat-raised-button color="accent" class="top-bar-button file-button">
+  <button
+    mat-raised-button
+    color="accent"
+    class="top-bar-button file-button"
+    (click)="fileInput.click()"
+  >
     Upload File
   </button>
+  <input
+    type="file"
+    hidden
+    (change)="onFileSelected($event)"
+    #fileInput
+  />
 </mat-toolbar>
 
 <div class="content">
   <h1>Welcome to mikroBiblioteka</h1>
+
+  <div *ngIf="selectedFile" class="file-info">
+    <p>Selected file: {{ selectedFile.name }}</p>
+    <button mat-flat-button color="primary" (click)="onUpload()">Send File</button>
+  </div>
+
+  <div *ngIf="uploadSuccess" class="success">
+    File uploaded successfully!
+  </div>
+
+  <div *ngIf="uploadError" class="error">
+    {{ uploadError }}
+  </div>
 </div>
