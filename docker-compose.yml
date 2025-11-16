@@ -19,7 +19,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db-postgres:5432/mydb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/mikrodb
+      - SPRING_DATA_MONGODB_URI=mongodb://root:rootpassword@mongo:27017/mikrodb?authSource=admin
     depends_on:
       - db-postgres
       - db-mongo

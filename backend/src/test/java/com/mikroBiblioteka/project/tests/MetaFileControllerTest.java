@@ -1,8 +1,8 @@
 package com.mikroBiblioteka.project.tests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mikroBiblioteka.project.model.MetaFile;
-import com.mikroBiblioteka.project.repository.MetaFileRepository;
+import com.mikroBiblioteka.project.model.FileMeta;
+import com.mikroBiblioteka.project.repository.FileMetaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +27,17 @@ class MetaFileControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private MetaFileRepository metaFileRepository;
+    private FileMetaRepository metaFileRepository;
 
-    private MetaFile sampleMetaFile;
+    private FileMeta sampleMetaFile;
 
     @BeforeEach
     void setup() {
         metaFileRepository.deleteAll();
-        sampleMetaFile = MetaFile.builder()
+        sampleMetaFile = FileMeta.builder()
                 .name("example.pdf")
                 .size(2048)
-                .dataId(1)
+                .dataId("1")
                 .build();
         sampleMetaFile = metaFileRepository.save(sampleMetaFile);
     }
@@ -58,10 +58,10 @@ class MetaFileControllerTest {
 
     @Test
     void shouldCreateMetaFile() throws Exception {
-        MetaFile newFile = MetaFile.builder()
+        FileMeta newFile = FileMeta.builder()
                 .name("newFile.txt")
                 .size(1234)
-                .dataId(2)
+                .dataId("2")
                 .build();
 
         mockMvc.perform(post("/api/meta-files")

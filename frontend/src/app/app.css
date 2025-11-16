@@ -68,11 +68,13 @@
 }
 
 .success {
-  color: green;
+  color: var(--color-separator);
   margin-top: 20px;
+  font-size: 20px;
 }
 
 .error {
   color: red;
   margin-top: 20px;
+  font-size: 20px;
 }
