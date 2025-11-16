@@ -19,7 +19,7 @@ public class FileMeta {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "meta_files_seq")
     @SequenceGenerator(name = "meta_files_seq", sequenceName = "meta_files_seq", allocationSize = 50)
-    private Integer id;
+    private Long id;
 
     @Column(name = "file_name", nullable = false, length = 100)
     private String name;

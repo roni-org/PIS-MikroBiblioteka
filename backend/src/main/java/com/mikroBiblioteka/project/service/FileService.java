@@ -16,6 +16,7 @@ import com.mongodb.client.gridfs.model.GridFSFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -70,20 +71,30 @@ public class FileService {
         return Optional.of(resource);
     }
 
+    public List<FileMeta> getAllFileMeta() {
+        return metaRepo.findAll();
+    }
 
-    public void delete(String metaId) {
-        Optional<FileData> metaOpt = dataRepo.findById(metaId);
-        if (metaOpt.isEmpty()) return;
-        FileData meta = metaOpt.get();
-
-
-        // delete from GridFS
-        gridFsTemplate.delete(org.springframework.data.mongodb.core.query.Query.query(
-            org.springframework.data.mongodb.core.query.Criteria.where("_id").is(new ObjectId(meta.getGridFsId()))
-        ));
+    public Optional<FileMeta> getFileMetaById(Long id) {
+        return metaRepo.findById(id);
+    }
 
 
-        // delete metadata
-        dataRepo.deleteById(metaId);
+
+    public void delete(Long id) {
+        Optional<FileMeta> metaOpt = metaRepo.findById(id);
+
+        metaOpt.ifPresent(meta -> {
+            // delete from GridFS
+            gridFsTemplate.delete(org.springframework.data.mongodb.core.query.Query.query(
+                org.springframework.data.mongodb.core.query.Criteria.where("_id").is(new ObjectId(meta.getDataId()))
+            ));
+
+
+            // TODO find and delete fileData record from dataRepo
+            // dataRepo.deleteById(metaId);
+            metaRepo.delete(meta);
+        });
+
     }
 }
