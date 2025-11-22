@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
-export class App implements  OnInit{
+export class App implements OnInit {
   protected readonly title = signal('frontend');
 
   selectedFile: File | null = null;
@@ -21,10 +21,19 @@ export class App implements  OnInit{
   uploadError = '';
   files: any[] = [];
 
-  private uploadUrl = 'http://localhost:8081/api/files/upload';
-  private listUrl = 'http://localhost:8081/api/files';
 
-  constructor(private http: HttpClient) {}
+  private uploadUrl!: string;
+  private listUrl!: string;
+
+  constructor(private http: HttpClient) {
+    const { protocol, hostname } = window.location;
+    const backendPort = '8081';
+
+    const baseUrl = `${protocol}//${hostname}:${backendPort}`;
+
+    this.uploadUrl = `${baseUrl}/api/files/upload`;
+    this.listUrl = `${baseUrl}/api/files`;
+  }
 
   ngOnInit(): void {
     this.loadFiles();
@@ -50,12 +59,12 @@ export class App implements  OnInit{
         this.uploadSuccess = true;
         this.selectedFile = null;
         this.loadFiles();
-        setTimeout(() => this.uploadSuccess = false, 3000);
+        setTimeout(() => (this.uploadSuccess = false), 3000);
       },
       error: (err) => {
         console.error(err);
         this.uploadError = 'Upload failed. Please try again.';
-        setTimeout(() => this.uploadError = '', 3000);
+        setTimeout(() => (this.uploadError = ''), 3000);
       }
     });
   }
