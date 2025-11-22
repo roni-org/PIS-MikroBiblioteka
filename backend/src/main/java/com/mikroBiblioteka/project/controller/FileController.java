@@ -23,7 +23,10 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/files")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {
+        "http://localhost:4200",
+        "http://20.19.89.210:4200"
+})
 @RequiredArgsConstructor
 public class FileController {
     private final FileService fileService;
