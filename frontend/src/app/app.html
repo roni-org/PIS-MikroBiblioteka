@@ -37,4 +37,20 @@
   <div *ngIf="uploadError" class="error">
     {{ uploadError }}
   </div>
+
+  <div class="files-list" *ngIf="files.length > 0">
+    <h2>Files in database:</h2>
+
+    <table class="files-table">
+      <tr>
+        <th>Name</th>
+        <th>Size (bytes)</th>
+      </tr>
+
+      <tr *ngFor="let file of files">
+        <td>{{ file.name }}</td>
+        <td>{{ file.size }}</td>
+      </tr>
+    </table>
+  </div>
 </div>
