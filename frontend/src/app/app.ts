@@ -103,4 +103,19 @@ export class App implements OnInit {
   });
 }
 
+delete(file: any): void {
+  if (!confirm(`Delete file "${file.name}"?`)) {
+    return;
+  }
+
+  const url = `${this.listUrl}/${file.id}`;
+
+  this.http.delete(url).subscribe({
+    next: () => {
+      this.loadFiles();
+    },
+    error: (err) => console.error('Delete error:', err)
+  });
+}
+
 }

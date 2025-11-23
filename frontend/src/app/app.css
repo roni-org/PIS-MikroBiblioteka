@@ -128,3 +128,28 @@
 .download-btn:active {
   transform: scale(0.95);
 }
+
+
+.delete-btn {
+  background-color: #8b1e1e;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.delete-btn mat-icon {
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.delete-btn:hover {
+  background-color: #b03030;
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+}

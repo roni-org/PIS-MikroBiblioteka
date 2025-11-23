@@ -84,14 +84,11 @@ public class FileService {
         Optional<FileMeta> metaOpt = metaRepo.findById(id);
 
         metaOpt.ifPresent(meta -> {
-            // delete from GridFS
+            String gridFsId = meta.getDataId();
             gridFsTemplate.delete(org.springframework.data.mongodb.core.query.Query.query(
-                org.springframework.data.mongodb.core.query.Criteria.where("_id").is(new ObjectId(meta.getDataId()))
+                    org.springframework.data.mongodb.core.query.Criteria.where("_id").is(new ObjectId(gridFsId))
             ));
-
-
-            // TODO find and delete fileData record from dataRepo
-            // dataRepo.deleteById(metaId);
+            dataRepo.deleteByGridFsId(gridFsId);
             metaRepo.delete(meta);
         });
 
