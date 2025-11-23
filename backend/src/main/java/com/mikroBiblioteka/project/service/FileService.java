@@ -53,23 +53,22 @@ public class FileService {
     }
 
 
-    public Optional<GridFsResource> getFileResource(String metaId) {
-        Optional<FileData> metaOpt = dataRepo.findById(metaId);
-        if (metaOpt.isEmpty()) return Optional.empty();
 
 
-        FileData meta = metaOpt.get();
+    public Optional<GridFsResource> getFileResource(String gridFsId) {
         GridFSFile gfile = gridFsTemplate.findOne(
-            org.springframework.data.mongodb.core.query.Query.query(
-            org.springframework.data.mongodb.core.query.Criteria.where("_id").is(new ObjectId(meta.getGridFsId()))
-            )
+                org.springframework.data.mongodb.core.query.Query.query(
+                        org.springframework.data.mongodb.core.query.Criteria.where("_id").is(new ObjectId(gridFsId))
+                )
         );
-        if (gfile == null) return Optional.empty();
-
+        if (gfile == null) {
+            return Optional.empty();
+        }
 
         GridFsResource resource = gridFsTemplate.getResource(gfile);
         return Optional.of(resource);
     }
+
 
     public List<FileMeta> getAllFileMeta() {
         return metaRepo.findAll();
