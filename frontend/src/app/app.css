@@ -84,7 +84,7 @@
 }
 
 .files-table {
-  width: 60%;
+  width: 70%;
   margin: 0 auto;
   border-collapse: collapse;
   font-size: 18px;
@@ -98,4 +98,33 @@
 .files-table th {
   background-color: var(--color-separator);
   color: var(--color-button-text);
+}
+
+
+.download-btn {
+  background-color: #2f7b3a;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.download-btn mat-icon {
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.download-btn:hover {
+  background-color: #3e8f4b;
+  transform: scale(1.1);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.download-btn:active {
+  transform: scale(0.95);
 }

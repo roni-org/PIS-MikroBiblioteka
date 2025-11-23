@@ -2,7 +2,9 @@ package com.mikroBiblioteka.project.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -68,4 +70,36 @@ public class FileController {
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable Long id) {
+        Optional<FileMeta> metaOpt = fileService.getFileMetaById(id);
+        if (metaOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        FileMeta meta = metaOpt.get();
+
+        var resourceOpt = fileService.getFileResource(meta.getDataId());
+        if (resourceOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            GridFsResource resource = resourceOpt.get();
+            byte[] data = resource.getInputStream().readAllBytes();
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(meta.getContentType()))
+                    .header("Content-Disposition",
+                            "attachment; filename=\"" + meta.getName() + "\"")
+                    .contentLength(data.length)
+                    .body(data);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }

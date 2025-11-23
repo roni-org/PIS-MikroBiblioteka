@@ -1,6 +1,7 @@
 import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { MatIconModule } from '@angular/material/icon';
 // import { RouterOutlet } from '@angular/router';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -9,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, CommonModule, HttpClientModule],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, HttpClientModule],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
@@ -24,6 +25,7 @@ export class App implements OnInit {
 
   private uploadUrl!: string;
   private listUrl!: string;
+  private downloadUrl: string;
 
   constructor(private http: HttpClient) {
     const { protocol, hostname } = window.location;
@@ -33,6 +35,8 @@ export class App implements OnInit {
 
     this.uploadUrl = `${baseUrl}/api/files/upload`;
     this.listUrl = `${baseUrl}/api/files`;
+    this.downloadUrl = `${baseUrl}/api/files/download`;
+
   }
 
   ngOnInit(): void {
@@ -79,4 +83,24 @@ export class App implements OnInit {
       }
     });
   }
+
+
+  download(file: any): void {
+  const url = `${this.downloadUrl}/${file.id}`;
+
+  this.http.get(url, { responseType: 'blob' }).subscribe({
+    next: (blob) => {
+      const a = document.createElement('a');
+      const objectUrl = URL.createObjectURL(blob);
+
+      a.href = objectUrl;
+      a.download = file.name;
+      a.click();
+
+      URL.revokeObjectURL(objectUrl);
+    },
+    error: (err) => console.error('Download error:', err)
+  });
+}
+
 }
