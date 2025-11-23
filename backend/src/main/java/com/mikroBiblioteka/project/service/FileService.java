@@ -68,8 +68,7 @@ public class FileService {
         GridFsResource resource = gridFsTemplate.getResource(gfile);
         return Optional.of(resource);
     }
-
-
+    
     public List<FileMeta> getAllFileMeta() {
         return metaRepo.findAll();
     }
@@ -77,7 +76,7 @@ public class FileService {
     public Optional<FileMeta> getFileMetaById(Long id) {
         return metaRepo.findById(id);
     }
-    
+
 
     public void delete(Long id) {
         Optional<FileMeta> metaOpt = metaRepo.findById(id);
