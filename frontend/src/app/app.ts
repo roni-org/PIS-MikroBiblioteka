@@ -97,6 +97,8 @@ export class App implements OnInit {
       a.download = file.name;
       a.click();
 
+      this.loadFiles();
+
       URL.revokeObjectURL(objectUrl);
     },
     error: (err) => console.error('Download error:', err)

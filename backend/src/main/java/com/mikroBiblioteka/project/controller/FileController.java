@@ -89,6 +89,8 @@ public class FileController {
             GridFsResource resource = resourceOpt.get();
             byte[] data = resource.getInputStream().readAllBytes();
 
+            fileService.incrementDownloadCount(meta);
+
             return ResponseEntity.ok()
                     .contentType(MediaType.parseMediaType(meta.getContentType()))
                     .header("Content-Disposition",

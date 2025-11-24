@@ -46,6 +46,7 @@ public class FileService {
                 .uploadedAt(LocalDateTime.now())
                 .contentType(file.getContentType())
                 .dataId(gridFsId.toHexString())
+                .downloadCount(0)
                 .build();
 
             return metaRepo.save(metaFile);
@@ -90,5 +91,10 @@ public class FileService {
             metaRepo.delete(meta);
         });
 
+    }
+
+    public void incrementDownloadCount(FileMeta meta) {
+        meta.setDownloadCount(meta.getDownloadCount() + 1);
+        metaRepo.save(meta);
     }
 }
