@@ -45,6 +45,7 @@
       <tr>
         <th>Name</th>
         <th>Size (bytes)</th>
+        <th>Downloads</th>
         <th> </th>
         <th> </th>
       </tr>
@@ -52,6 +53,7 @@
       <tr *ngFor="let file of files">
         <td>{{ file.name }}</td>
         <td>{{ file.size }}</td>
+        <td>{{ file.downloadCount }}</td>
         <td class="download-cell">
           <button class="download-btn" (click)="download(file)">
             <mat-icon>download</mat-icon>
