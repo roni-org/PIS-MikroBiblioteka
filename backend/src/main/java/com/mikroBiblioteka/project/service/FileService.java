@@ -92,4 +92,9 @@ public class FileService {
         });
 
     }
+
+    public void incrementDownloadCount(FileMeta meta) {
+        meta.setDownloadCount(meta.getDownloadCount() + 1);
+        metaRepo.save(meta);
+    }
 }
