@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS meta_files (
     file_size INTEGER,
     uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     data_id VARCHAR(100),
-    content_type VARCHAR(100)
+    content_type VARCHAR(100),
+    download_count INTEGER NOT NULL DEFAULT 0
 );
