@@ -153,3 +153,33 @@
   transform: scale(1.1);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
 }
+
+.filter-field {
+  margin-right: auto;
+  display: flex;
+  width: 600px;
+  margin-bottom: 1rem;
+  margin-left: 15px;
+}
+
+
+.filter-field input {
+  color: white;
+  background-color: #0b2315;
+  width: 250px;
+  padding: 8px 12px;
+  border: 2px solid #385a46;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-left: 15px;
+}
+
+.filter-field::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.filter-field input:hover {
+  border-color: var(--color-separator);
+  box-shadow: 0 0 4px var(--color-separator);
+}
