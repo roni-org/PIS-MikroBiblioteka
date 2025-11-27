@@ -1,18 +1,21 @@
 import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { MatIconModule } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
 // import { RouterOutlet } from '@angular/router';
 
+import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, HttpClientModule],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, HttpClientModule, MatFormFieldModule, MatInputModule, FormsModule],
   templateUrl: './app.html',
-  styleUrls: ['./app.css']
+  styleUrls: ['./app.css'],
 })
 export class App implements OnInit {
   protected readonly title = signal('frontend');
@@ -21,7 +24,7 @@ export class App implements OnInit {
   uploadSuccess = false;
   uploadError = '';
   files: any[] = [];
-
+  filterText: string = '';
 
   private uploadUrl!: string;
   private listUrl!: string;
@@ -41,6 +44,15 @@ export class App implements OnInit {
 
   ngOnInit(): void {
     this.loadFiles();
+  }
+
+  get filteredFiles() {
+    if (!this.filterText) {
+      return this.files;
+    }
+    return this.files.filter(file =>
+      file.name.toLowerCase().includes(this.filterText.toLowerCase())
+    );
   }
 
   onFileSelected(event: Event): void {

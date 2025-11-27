@@ -38,8 +38,13 @@
     {{ uploadError }}
   </div>
 
+  <div appearance="outline" class="filter-field">
+    <h3>Filter by name:</h3>
+    <input matInput placeholder="Enter file name" [(ngModel)]="filterText" />
+  </div>
   <div class="files-list" *ngIf="files.length > 0">
     <h2>Files in database:</h2>
+
 
     <table class="files-table">
       <tr>
