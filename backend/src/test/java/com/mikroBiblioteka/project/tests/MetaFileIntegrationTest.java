@@ -2,31 +2,38 @@ package com.mikroBiblioteka.project.tests;
 
 import com.mikroBiblioteka.project.model.FileMeta;
 import com.mikroBiblioteka.project.repository.FileMetaRepository;
-import com.mikroBiblioteka.project.service.FileService;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import java.time.LocalDateTime;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 
-@SpringBootTest(
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {
-                "spring.data.mongodb.database=files-test",
-                "de.flapdoodle.mongodb.embedded.version=6.0.5"
-        }
-)
+import java.io.InputStream;
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@TestPropertySource(properties = {
+        "spring.mongodb.embedded.version=6.0.5",
+        "de.flapdoodle.mongodb.embedded.version=6.0.5",
+        "spring.data.mongodb.database=files-test",
+        "spring.data.mongodb.port=0"
+})
 class MetaFileIntegrationTest {
 
     @Autowired
@@ -35,13 +42,21 @@ class MetaFileIntegrationTest {
     @Autowired
     private FileMetaRepository fileMetaRepository;
 
+    @MockBean
+    private GridFsTemplate gridFsTemplate;
+
     @BeforeEach
     void cleanDb() {
         fileMetaRepository.deleteAll();
     }
 
     @Test
-    void uploadFile_shouldPersistMetaInH2() throws Exception {
+    void uploadFile_shouldPersistMetaInDb() throws Exception {
+        when(gridFsTemplate.store(
+                any(InputStream.class),
+                any(String.class),
+                any(String.class)
+        )).thenReturn(new ObjectId("651111111111111111111111"));
 
         MockMultipartFile multipartFile = new MockMultipartFile(
                 "file",
@@ -50,17 +65,18 @@ class MetaFileIntegrationTest {
                 "hello world".getBytes()
         );
 
-        mockMvc.perform(multipart("/api/files/upload")
-                        .file(multipartFile))
+        mockMvc.perform(
+                        multipart("/api/files/upload")
+                                .file(multipartFile)
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("test.txt"));
-
-        long count = fileMetaRepository.count();
-        assert count == 1;
+        assertThat(fileMetaRepository.findByName("test.txt")).isPresent();
     }
 
+
     @Test
-    void getAllMetaFiles_shouldReturnDataFromH2() throws Exception {
+    void getAllMetaFiles_shouldReturnDataFromDb() throws Exception {
         FileMeta meta = fileMetaRepository.save(
                 FileMeta.builder()
                         .name("abc.txt")
@@ -74,7 +90,8 @@ class MetaFileIntegrationTest {
 
         mockMvc.perform(get("/api/files"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("abc.txt"));
+                .andExpect(jsonPath("$[?(@.id == %s)].name", meta.getId())
+                        .value("abc.txt"));
     }
 
     @Test
@@ -98,7 +115,7 @@ class MetaFileIntegrationTest {
 
     @Test
     void getMetaFileById_shouldReturn404WhenNotExists() throws Exception {
-        mockMvc.perform(get("/api/files/{id}", 999L))
+        mockMvc.perform(get("/api/files/{id}", 999999L))
                 .andExpect(status().isNotFound());
     }
 
@@ -128,5 +145,4 @@ class MetaFileIntegrationTest {
         mockMvc.perform(delete("/api/files/{id}", 123L))
                 .andExpect(status().isNotFound());
     }
-
 }
