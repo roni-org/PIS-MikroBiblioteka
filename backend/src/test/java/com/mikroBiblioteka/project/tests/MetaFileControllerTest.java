@@ -1,7 +1,9 @@
 package com.mikroBiblioteka.project.tests;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.util.AssertionErrors.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -11,12 +13,15 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,6 +29,8 @@ import com.mikroBiblioteka.project.controller.FileController;
 import com.mikroBiblioteka.project.model.FileMeta;
 import com.mikroBiblioteka.project.repository.FileMetaRepository;
 import com.mikroBiblioteka.project.service.FileService;
+import org.springframework.web.multipart.MultipartFile;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @WebMvcTest(controllers = {FileController.class},
@@ -133,5 +140,18 @@ class MetaFileControllerTest {
 
         mockMvc.perform(get("/api/files/download/{id}", 1))
                 .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    void shouldReturnInternalServerErrorWhenIOExceptionOccursWhileFileUpload() throws IOException {
+        MultipartFile file = mock(MultipartFile.class);
+        FileService fileService = mock(FileService.class);
+        when(fileService.store(file)).thenThrow(new IOException("test exception"));
+
+        FileController controller = new FileController(fileService);
+
+        ResponseEntity<FileMeta> response = controller.uploadFile(file);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+        assertThat(response.getBody()).isNull();
     }
 }
