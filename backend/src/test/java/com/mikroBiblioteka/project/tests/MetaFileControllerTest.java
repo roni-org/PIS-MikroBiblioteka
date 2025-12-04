@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -90,5 +92,46 @@ class MetaFileControllerTest {
 
         mockMvc.perform(delete("/api/files/{id}", sampleMetaFile.getId()))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void shouldReturnNotFoundForMissingMetaFile() throws Exception {
+        when(fileService.getFileMetaById(99L)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/files/{id}", 99))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenDownloadingMetaMissing() throws Exception {
+        when(fileService.getFileMetaById(99L)).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/files/download/{id}", 99))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenGridFsResourceMissing() throws Exception {
+        when(fileService.getFileMetaById(1L)).thenReturn(Optional.of(sampleMetaFile));
+        when(fileService.getFileResource(sampleMetaFile.getDataId())).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/files/download/{id}", 1))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void shouldReturnInternalServerErrorWhenDownloadFails() throws Exception {
+        when(fileService.getFileMetaById(1L))
+                .thenReturn(Optional.of(sampleMetaFile));
+        GridFsResource mockResource = mock(GridFsResource.class);
+
+        when(fileService.getFileResource(sampleMetaFile.getDataId()))
+                .thenReturn(Optional.of(mockResource));
+
+        when(mockResource.getInputStream())
+                .thenThrow(new IOException("Read failed"));
+
+        mockMvc.perform(get("/api/files/download/{id}", 1))
+                .andExpect(status().isInternalServerError());
     }
 }
