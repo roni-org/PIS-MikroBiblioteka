@@ -37,6 +37,7 @@ public class FileMeta {
     @Column(name = "content_type")
     private String contentType;
 
+    @Builder.Default
     @Column(name = "download_count", nullable = false)
     private Integer downloadCount = 0;
 
