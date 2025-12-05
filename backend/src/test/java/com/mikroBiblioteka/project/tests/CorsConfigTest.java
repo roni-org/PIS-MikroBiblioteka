@@ -1,3 +1,5 @@
+package com.mikroBiblioteka.project.tests;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.mikroBiblioteka.project.config.CorsConfig;
